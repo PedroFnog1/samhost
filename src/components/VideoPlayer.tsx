@@ -40,7 +40,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ playlistVideo, onVideoEnd }) 
         if (data.success && data.obs_stream.is_live) {
           setObsStreamActive(true);
           // URL do stream OBS
-        setObsStreamUrl(`http://samhost.wcore.com.br:1935/samhost/${userLogin}_live/playlist.m3u8`);
+          setObsStreamUrl(`http://samhost.wcore.com.br:1935/samhost/${userLogin}_live/playlist.m3u8`);
         } else {
           setObsStreamActive(false);
         }

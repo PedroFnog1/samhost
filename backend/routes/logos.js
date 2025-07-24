@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
       const userEmail = req.user.email.split('@')[0];
       
       // Caminho para logos: /usr/local/WowzaStreamingEngine/content/{userEmail}/logos/
-      const logoPath = `/usr/local/WowzaStreamingEngine/content/${userEmail}/logos`;
+      const logoPath = path.join(process.cwd(), 'uploads', userEmail, 'logos');
       
       // Criar diretório se não existir
       await fs.mkdir(logoPath, { recursive: true });
@@ -76,7 +76,7 @@ router.get('/', authMiddleware, async (req, res) => {
     // Ajustar URLs para serem acessíveis via HTTP
     const logos = rows.map(logo => ({
       ...logo,
-      url: logo.url ? `/content/${userEmail}/logos/${path.basename(logo.url)}` : null
+      url: logo.url ? `/uploads/${userEmail}/logos/${path.basename(logo.url)}` : null
     }));
 
     res.json(logos);
@@ -115,7 +115,7 @@ router.post('/', authMiddleware, upload.single('logo'), async (req, res) => {
     res.status(201).json({
       id: result.insertId,
       nome: nome,
-      url: `/content/${userEmail}/logos/${req.file.filename}`,
+      url: `/uploads/${userEmail}/logos/${req.file.filename}`,
       tamanho: req.file.size,
       tipo_arquivo: req.file.mimetype
     });
@@ -146,7 +146,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
 
     // Remover arquivo físico
     try {
-      const fullPath = `/usr/local/WowzaStreamingEngine/content/${userEmail}${logo.arquivo}`;
+      const fullPath = path.join(process.cwd(), 'uploads', userEmail, logo.arquivo);
       await fs.unlink(fullPath);
     } catch (fileError) {
       console.warn('Erro ao remover arquivo físico:', fileError.message);

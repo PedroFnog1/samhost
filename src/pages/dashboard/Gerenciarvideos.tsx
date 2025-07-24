@@ -85,7 +85,9 @@ function ModalVideo({
     
     // Se é uma URL relativa, construir a URL completa
     const baseUrl = window.location.origin;
-    return `${baseUrl}${video.url}`;
+    // Garantir que a URL comece com /
+    const url = video.url.startsWith('/') ? video.url : `/${video.url}`;
+    return `${baseUrl}${url}`;
   };
 
   return (

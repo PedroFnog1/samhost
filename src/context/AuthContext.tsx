@@ -100,7 +100,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (data.success && data.token && data.user) {
         localStorage.setItem('auth_token', data.token);
-        const validatedUser = userSchema.parse(data.user);
+        // Garantir que o tipo seja definido
+        const userDataWithType = {
+          ...data.user,
+          tipo: data.user.tipo || 'streaming' // Valor padrão se não estiver definido
+        };
+        const validatedUser = userSchema.parse(userDataWithType);
         setUser(validatedUser);
         setIsAuthenticated(true);
         navigate('/dashboard');

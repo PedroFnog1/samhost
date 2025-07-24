@@ -185,7 +185,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
 
     // Remover arquivo físico
     try {
-      const fullPath = `/usr/local/WowzaStreamingEngine/content${video.path_video}`;
+      const fullPath = path.join(process.cwd(), video.path_video.replace('/uploads/', 'uploads/'));
       await fs.unlink(fullPath);
     } catch (fileError) {
       console.warn('Erro ao remover arquivo físico:', fileError.message);

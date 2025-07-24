@@ -39,8 +39,11 @@
   app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-  // Servir arquivos estáticos do Wowza
-  app.use('/content', express.static('/usr/local/WowzaStreamingEngine/content'));
+  // Servir arquivos estáticos (uploads de vídeos)
+  app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+  
+  // Manter compatibilidade com /content para URLs antigas
+  app.use('/content', express.static(path.join(__dirname, '../uploads')));
   
   // Servir arquivos estáticos do frontend em produção
   if (isProduction) {
@@ -56,6 +59,11 @@
 
   // Rotas da API
   app.use('/api/auth', authRoutes);
+  
+  // Adicionar rota para user-settings no auth
+  app.get('/api/user-settings', authRoutes);
+  app.post('/api/user-settings', authRoutes);
+  
   app.use('/api/folders', foldersRoutes);
   app.use('/api/videos', videosRoutes);
   app.use('/api/playlists', playlistsRoutes);

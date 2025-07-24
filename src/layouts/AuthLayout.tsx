@@ -6,11 +6,17 @@ const AuthLayout: React.FC = () => {
     <div className="min-h-screen bg-gray-100 flex">
       {/* Left side with brand and logo */}
       <div className="hidden lg:flex lg:w-1/2 bg-primary-600 flex-col justify-center items-center p-12 text-white">
-        <img 
-          src="/logo.png" 
-          alt="Logo" 
-          className="h-32 mb-8" // <-- Tamanho aumentado aqui
-        />
+        <div className="flex items-center justify-center mb-8">
+          <img 
+            src="/logo.png" 
+            alt="Logo" 
+            className="h-32 w-auto object-contain"
+            onError={(e) => {
+              console.error('Erro ao carregar logo:', e);
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        </div>
         <p className="text-xl mb-8 text-center">
           Gerencie seus streams e conteúdo on-demand com facilidade e eficiência
         </p>
@@ -21,9 +27,15 @@ const AuthLayout: React.FC = () => {
         <div className="w-full max-w-md">
           <div className="bg-white p-8 rounded-lg shadow-md">
             <div className="flex justify-center mb-6 lg:hidden">
-              {/* Ícone visível apenas no mobile */}
-              {/* Você pode remover esse ícone também, se quiser */}
-              {/* <FileVideo size={60} className="text-primary-600" /> */}
+              <img 
+                src="/logo.png" 
+                alt="Logo" 
+                className="h-20 w-auto object-contain"
+                onError={(e) => {
+                  console.error('Erro ao carregar logo mobile:', e);
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
             </div>
             <Outlet />
           </div>
